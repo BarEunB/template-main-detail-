@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+              
+
+              <bean id="viewResolver2" class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- hello 뷰어 -->
+		<!-- prefix 접두사 -->
+		<property name="prefix" value="/WEB-INF/views/" />
+		<!-- suffix 접미어 -->  
+		<property name="suffix" value=".jsp" />
+	</bean>        
+	
+
+ 
+	  
+	   <context:annotation-config/>
+	    <mvc:annotation-driven>  
+		<mvc:message-converters>
+			<!-- @ResponseBody로 String 처리할때 한글처리 -->
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+</mvc:annotation-driven>
+
+ <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+   destroy-method="close" >
+      <property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
+      <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:XE" />
+      <property name="user" value="scott" />
+      <property name="password" value="tiger" />
+   </bean>
+
+ 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:mybatis/*.xml" />
+	</bean> 
+
+	
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>messages.validation</value>
+			</list>
+		</property>
+	</bean> 
+	
+	
+
+</beans>
